@@ -54,14 +54,15 @@ if (TOKEN==''):
 	Api = foursquare.Foursquare(client_id=CONSUMER_KEY,client_secret=CONSUMER_SECRET,redirect_uri=URL_CALLBACK)
 	auth_url = Api.oauth.auth_url()
 	print 'Please authorize: ' + auth_url
-	code = raw_input('The code: ').strip()
+	code = raw_input('Copy/Past The code XXXX : ').strip()
 	access_token = Api.oauth.get_token(code)
-	print 'Your access token is ' + access_token
+	print 'Your access token is ' + access_token + ' Relaunch'
 	keys=(access_token)
 	vfile=open(TOKEN_FILE,'w+')
 	pickle.dump(keys,vfile)
 	vfile.close()
 	Api.set_access_token(access_token)
+	exit(0)
 else:	
 	Api= foursquare.Foursquare(client_id=CONSUMER_KEY,client_secret=CONSUMER_SECRET,
 		access_token=TOKEN)
