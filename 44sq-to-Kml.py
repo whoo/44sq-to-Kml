@@ -97,8 +97,6 @@ for checkin in Api.users.all_checkins():
 		place=lb.E.Placemark(lb.E.name(name),lb.E.styleUrl('#red'),lb.E.description(desc),
 			lb.E.Point(lb.E.coordinates(ll)))
 		folder[country].append(place)
-		print checkin
-		exit(0)
 
 for key in folder:
 	document.append(folder[key])
