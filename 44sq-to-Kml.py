@@ -34,7 +34,7 @@ except ImportError:
 try:
 	import cred
 except ImportError:
-	print "Please create a creds.py file in this package, based upon cred.example.py"
+	print "Please create a cred.py file in this package, based upon cred.example.py"
 	exit(1)
 
 TOKEN_FILE='token_file.key'
