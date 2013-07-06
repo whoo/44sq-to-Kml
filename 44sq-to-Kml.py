@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 # Copyright (C) 2013 Dominique DERRIER <d.derrier@linkbynet.com>
 #
@@ -28,13 +28,14 @@ try:
 	import foursquare
 except ImportError:
 	print "install foursquare : pip install foursquare"
+	exit(1)
 
 
 try:
 	import cred
 except ImportError:
 	print "Please create a creds.py file in this package, based upon cred.example.py"
-
+	exit(1)
 
 TOKEN_FILE='token_file.key'
 CONSUMER_KEY 	= cred.CONSUMER_KEY
