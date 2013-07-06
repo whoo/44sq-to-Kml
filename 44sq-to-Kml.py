@@ -44,11 +44,11 @@ if (os.path.exists(TOKEN_FILE)):
 	TOKEN=keys
 
 if (TOKEN==''):
+	""" Get token with Oauth"""
 	Api = foursquare.Foursquare(client_id=CONSUMER_KEY,client_secret=CONSUMER_SECRET,redirect_uri=URL_CALLBACK)
 	auth_url = Api.oauth.auth_url()
 	print 'Please authorize: ' + auth_url
 	code = raw_input('The code: ').strip()
-	print code
 	access_token = Api.oauth.get_token(code)
 	print 'Your access token is ' + access_token
 	keys=(access_token)
@@ -72,30 +72,37 @@ folder={}
 
 for checkin in Api.users.all_checkins():
 	if ('venue' in checkin ):
-		pict=categorie=" "
-		pict="https://playfoursquare.s3.amazonaws.com/press/logo/icon-36x36.png"
+		categorie=" "
+		icon="https://playfoursquare.s3.amazonaws.com/press/logo/icon-36x36.png"
 		if  len(checkin['venue']['categories']):
+			""" Avoid empty fields """
 			categorie = checkin['venue']['categories'][0]['name']
-			pict= checkin['venue']['categories'][0]['icon']['prefix'][:-1]+checkin['venue']['categories'][0]['icon']['suffix']
+			icon= checkin['venue']['categories'][0]['icon']['prefix'][:-1]+checkin['venue']['categories'][0]['icon']['suffix']
 		name=checkin['venue']['name']
-		lat=checkin['venue']['location']['lat']
-		lng=checkin['venue']['location']['lng']
 		url=checkin['venue']['canonicalUrl']
 		if ('country' in checkin['venue']['location']):
+			""" Avoid empty fields"""
 			country=checkin['venue']['location']['country']
 			if ('city' in checkin['venue']['location']):
 				 city=checkin['venue']['location']['city'] 
 
 		if not (country in folder):
-			folder[country]=lb.E.Folder(lb.E.name(country),lb.E.description('Foursquare data in %s'%(country)))
+			folder[country]=lb.E.Folder(lb.E.name(country),lb.E.description('4sq data in %s'%(country)))
 		
-		ll="%s,%s,0"%(lng,lat)
 		date=datetime.date.fromtimestamp(checkin['createdAt'])
 
-		data={'pict':pict,'categorie':categorie,'city':city,'country':country,'url':url,'date':date}
-		desc="<img src=%(pict)s> %(categorie)s in %(city)s <br>%(country)s<br>Le %(date)s <a href='%(url)s'>Go</a>"%(data)
+		data={'icon':icon,
+		'categorie':categorie,
+		'city':city,
+		'country':country,
+		'url':url,
+		'date':date}
+
+		desc		="<img src=%(icon)s> %(categorie)s in %(city)s <br>%(country)s<br>Le %(date)s <a href='%(url)s'>Go</a>"%(data)
+		coordinates	="%s,%s,0"%(checkin['venue']['location']['lng'],checkin['venue']['location']['lat'])
+
 		place=lb.E.Placemark(lb.E.name(name),lb.E.styleUrl('#red'),lb.E.description(desc),
-			lb.E.Point(lb.E.coordinates(ll)))
+			lb.E.Point(lb.E.coordinates(coordinates)))
 		folder[country].append(place)
 
 for key in folder:
