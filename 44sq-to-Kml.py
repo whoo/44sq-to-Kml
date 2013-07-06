@@ -18,7 +18,6 @@
 # along with 44sq-to-Kml.  If not, see <http://www.gnu.org/licenses/>
 # 
 
-import foursquare
 from lxml import etree
 import lxml.builder as lb
 import pickle
@@ -26,9 +25,15 @@ import os
 import datetime
 
 try:
-    import cred
+	import foursquare
 except ImportError:
-    print "Please create a creds.py file in this package, based upon cred.example.py"
+	print "install foursquare : pip install foursquare"
+
+
+try:
+	import cred
+except ImportError:
+	print "Please create a creds.py file in this package, based upon cred.example.py"
 
 
 TOKEN_FILE='token_file.key'
